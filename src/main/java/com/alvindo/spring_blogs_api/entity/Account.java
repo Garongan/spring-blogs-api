@@ -1,4 +1,4 @@
-package com.alvindo.springblogsapi.entity;
+package com.alvindo.spring_blogs_api.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

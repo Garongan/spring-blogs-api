@@ -1,10 +1,9 @@
-package com.alvindo.springblogsapi.entity;
+package com.alvindo.spring_blogs_api.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Setter
 @Getter
@@ -12,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Creator {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,11 +25,14 @@ public class Creator {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "comment")
+    private String comment;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @ManyToOne
+    @JoinColumn(name = "blog_id", nullable = false)
+    private Blog blog;
 
+    @ManyToOne
+    @JoinColumn(name = "creator_id", nullable = false)
+    private Creator creator;
 }

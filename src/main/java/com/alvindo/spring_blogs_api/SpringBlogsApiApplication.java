@@ -1,4 +1,4 @@
-package com.alvindo.springblogsapi;
+package com.alvindo.spring_blogs_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

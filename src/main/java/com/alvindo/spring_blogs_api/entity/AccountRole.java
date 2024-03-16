@@ -1,7 +1,7 @@
-package com.alvindo.springblogsapi.entity;
+package com.alvindo.spring_blogs_api.entity;
 
 
-import com.alvindo.springblogsapi.constant.RoleEnum;
+import com.alvindo.spring_blogs_api.constant.RoleEnum;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.alvindo</groupId>
-	<artifactId>spring-blogs-api</artifactId>
+	<artifactId>spring_blogs_api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-blogs-api</name>
 	<description>Spring Boot Blogs API</description>
