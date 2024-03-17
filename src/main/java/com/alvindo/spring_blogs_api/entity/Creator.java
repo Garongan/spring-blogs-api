@@ -18,14 +18,15 @@ public class Creator {
     private String id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", updatable = false)
-    private Date createdAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private Date updatedAt;
 
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "avatar_url", nullable = false)
+    private String avatarUrl;
 }

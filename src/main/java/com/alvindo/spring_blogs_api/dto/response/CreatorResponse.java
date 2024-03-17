@@ -2,17 +2,18 @@ package com.alvindo.spring_blogs_api.dto.response;
 
 import lombok.*;
 
-import java.util.List;
+import java.util.Date;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class AuthResponse {
+public class CreatorResponse {
     private String id;
+    private Date updatedAt;
     private String name;
     private String email;
-    private List<?> roles;
+    private String avatarUrl;
     private String token;
 }
