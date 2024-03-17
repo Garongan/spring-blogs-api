@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -36,6 +35,4 @@ public class Blog {
     @JoinColumn(name = "creator_id", nullable = false)
     private Creator creator;
 
-    @ManyToMany
-    private List<Tag> tags;
 }

@@ -5,6 +5,7 @@ import com.alvindo.spring_blogs_api.dto.response.CreatorResponse;
 import com.alvindo.spring_blogs_api.entity.Creator;
 import com.alvindo.spring_blogs_api.repository.CreatorRepository;
 import com.alvindo.spring_blogs_api.service.CreatorService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,7 @@ public class CreatorServiceImpl implements CreatorService {
 
     @Transactional
     @Override
-    public CreatorResponse create(NewCreatorRequest request) {
+    public CreatorResponse create(@NonNull NewCreatorRequest request) {
         CreatorResponse foundedCreator = getById(request.getId());
         if (foundedCreator != null) return foundedCreator;
 
@@ -48,7 +49,7 @@ public class CreatorServiceImpl implements CreatorService {
         return creators.stream().map(this::getCreatorResponse).toList();
     }
 
-    private CreatorResponse getCreatorResponse(Creator creator) {
+    private CreatorResponse getCreatorResponse(@NonNull Creator creator) {
         return CreatorResponse.builder()
                 .id(creator.getId())
                 .updatedAt(creator.getUpdatedAt())

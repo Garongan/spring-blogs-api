@@ -17,7 +17,7 @@ public class ErrorController {
     public ResponseEntity<CommonResponse<?>> responseStatusExceptionHandler(@NonNull HttpStatus httpStatus, @NonNull ResponseStatusException message){
         CommonResponse<?> response = CommonResponse.builder()
                 .httpStatus(httpStatus.value())
-                .httpMessage(message.getReason())
+                .httpMessage(message.getMessage())
                 .build();
         return ResponseEntity.status(httpStatus).body(response);
     }
