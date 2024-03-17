@@ -7,6 +7,9 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class CreatorRepositoryImpl implements CreatorRepository {
@@ -43,4 +46,17 @@ public class CreatorRepositoryImpl implements CreatorRepository {
             return null;
         }
     }
+
+    @Override
+    public List<Creator> getAll() {
+        String sql = "SELECT * FROM creator";
+
+        List<Creator> creators = new ArrayList<>();
+        for (Object object : entityManager.createNativeQuery(sql, Creator.class).getResultList()) {
+            creators.add((Creator) object);
+        }
+
+        return creators;
+    }
+
 }

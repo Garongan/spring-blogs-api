@@ -1,7 +1,8 @@
 package com.alvindo.spring_blogs_api.controller;
 
+import com.alvindo.spring_blogs_api.constant.StatusMessage;
 import com.alvindo.spring_blogs_api.dto.request.NewCreatorRequest;
-import com.alvindo.spring_blogs_api.dto.response.CreatorResponse;
+import com.alvindo.spring_blogs_api.dto.response.AuthResponse;
 import com.alvindo.spring_blogs_api.dto.response.CommonResponse;
 import com.alvindo.spring_blogs_api.service.CreatorService;
 import lombok.RequiredArgsConstructor;
@@ -21,32 +22,29 @@ public class AuthController {
     private final CreatorService creatorService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse<CreatorResponse>> loginCreator(@AuthenticationPrincipal OidcUser principal) {
-
-        String[] split = principal.getName().split("\\|");
+    public ResponseEntity<CommonResponse<AuthResponse>> loginCreator(@AuthenticationPrincipal OidcUser principal) {
 
         NewCreatorRequest request = NewCreatorRequest.builder()
-                .id(split[1])
+                .id(principal.getName())
                 .updatedAt(new Date(principal.getUpdatedAt().toEpochMilli()))
                 .name(principal.getNickName())
                 .email(principal.getEmail())
                 .avatarUrl(principal.getPicture())
                 .build();
 
-        CreatorResponse creatorResponse = creatorService.create(request);
-        creatorResponse.setToken(principal.getIdToken().getTokenValue());
+        creatorService.create(request);
 
-        CommonResponse<CreatorResponse> response = CommonResponse.<CreatorResponse>builder()
+        AuthResponse authResponse = AuthResponse.builder()
+                .email(principal.getEmail())
+                .token(principal.getIdToken().getTokenValue())
+                .build();
+
+        CommonResponse<AuthResponse> response = CommonResponse.<AuthResponse>builder()
                 .httpStatus(HttpStatus.CREATED.value())
-                .httpMessage("Logged")
-                .data(creatorResponse)
+                .httpMessage(StatusMessage.SUCCESS_CREATE)
+                .data(authResponse)
                 .build();
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping(path = "/test")
-    public String testToken(){
-        return "test token success";
     }
 
 }

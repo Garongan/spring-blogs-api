@@ -9,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CreatorServiceImpl implements CreatorService {
+
     private final CreatorRepository creatorRepository;
 
     @Transactional
@@ -37,6 +40,12 @@ public class CreatorServiceImpl implements CreatorService {
         Creator creator = creatorRepository.getById(id);
         if (creator != null ) return getCreatorResponse(creator);
         return null;
+    }
+
+    @Override
+    public List<CreatorResponse> getAll() {
+        List<Creator> creators = creatorRepository.getAll();
+        return creators.stream().map(this::getCreatorResponse).toList();
     }
 
     private CreatorResponse getCreatorResponse(Creator creator) {

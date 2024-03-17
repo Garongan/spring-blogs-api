@@ -15,5 +15,4 @@ public class CreatorResponse {
     private String name;
     private String email;
     private String avatarUrl;
-    private String token;
 }
