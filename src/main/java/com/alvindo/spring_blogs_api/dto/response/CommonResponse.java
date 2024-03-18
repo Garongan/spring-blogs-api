@@ -11,4 +11,5 @@ public class CommonResponse<T> {
     private Integer httpStatus;
     private String httpMessage;
     private T data;
+    private PaginationResponse paginationResponse;
 }

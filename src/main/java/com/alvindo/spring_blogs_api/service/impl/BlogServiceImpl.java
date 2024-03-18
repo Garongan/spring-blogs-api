@@ -1,6 +1,7 @@
 package com.alvindo.spring_blogs_api.service.impl;
 
 import com.alvindo.spring_blogs_api.constant.StatusMessage;
+import com.alvindo.spring_blogs_api.dto.request.FilterBlogRequest;
 import com.alvindo.spring_blogs_api.dto.request.NewBlogRequest;
 import com.alvindo.spring_blogs_api.dto.response.BlogResponse;
 import com.alvindo.spring_blogs_api.dto.response.CreatorResponse;
@@ -9,15 +10,20 @@ import com.alvindo.spring_blogs_api.entity.Creator;
 import com.alvindo.spring_blogs_api.repository.BlogRepository;
 import com.alvindo.spring_blogs_api.service.BlogService;
 import com.alvindo.spring_blogs_api.service.CreatorService;
+import com.alvindo.spring_blogs_api.specification.BlogSpecification;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,6 +32,7 @@ public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
     private final CreatorService creatorService;
+    private final BlogSpecification blogSpecification;
 
     @Transactional
     @Override
@@ -70,15 +77,19 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogResponse> getAll() {
-        List<Blog> blogs = blogRepository.findAll();
-        return blogs.stream().map(this::getBlogResponse).toList();
+    public Page<BlogResponse> getAll(FilterBlogRequest request) {
+        Specification<Blog> specification = blogSpecification.getBlogSpecification(request);
+        Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDirection()), request.getSortBy());
+        if (request.getPage() <= 0) request.setPage(1);
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
+        Page<Blog> pages = blogRepository.findAll(specification, pageable);
+        return pages.map(this::getBlogResponse);
     }
 
     private BlogResponse getBlogResponse(@NonNull Blog blog){
         return BlogResponse.builder()
                 .id(blog.getId())
-                .updatedAt(blog.getUpdatedAt())
+                .createdAt(blog.getCreatedAt().toString())
                 .title(blog.getTitle())
                 .body(blog.getBody())
                 .creatorName(blog.getCreator().getName())
