@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,5 +35,11 @@ public class Blog {
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
     private Creator creator;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Image> images;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Comment> comments;
 
 }

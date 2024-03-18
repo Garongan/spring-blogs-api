@@ -29,10 +29,10 @@ public class Comment {
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "blog_id", nullable = false)
-    private Blog blog;
-
-    @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
     private Creator creator;
+
+    @ManyToOne
+    @JoinColumn(name = "blog_id", nullable = false)
+    private Blog blog;
 }

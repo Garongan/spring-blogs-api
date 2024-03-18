@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -29,4 +30,10 @@ public class Creator {
 
     @Column(name = "avatar_url", nullable = false)
     private String avatarUrl;
+
+    @OneToMany(mappedBy = "creator")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "creator")
+    private List<Blog> blogs;
 }

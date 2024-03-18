@@ -25,7 +25,7 @@ public class CreatorServiceImpl implements CreatorService {
     private final CreatorRepository creatorRepository;
     private final CreatorSpecification creatorSpecification;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public CreatorResponse create(@NonNull NewCreatorRequest request) {
         CreatorResponse foundedCreator = getById(request.getId());

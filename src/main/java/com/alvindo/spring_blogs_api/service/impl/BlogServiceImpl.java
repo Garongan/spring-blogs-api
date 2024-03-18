@@ -10,7 +10,9 @@ import com.alvindo.spring_blogs_api.entity.Blog;
 import com.alvindo.spring_blogs_api.entity.Creator;
 import com.alvindo.spring_blogs_api.repository.BlogRepository;
 import com.alvindo.spring_blogs_api.service.BlogService;
+import com.alvindo.spring_blogs_api.service.CommentService;
 import com.alvindo.spring_blogs_api.service.CreatorService;
+import com.alvindo.spring_blogs_api.service.ImageService;
 import com.alvindo.spring_blogs_api.specification.BlogSpecification;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +36,10 @@ public class BlogServiceImpl implements BlogService {
     private final BlogRepository blogRepository;
     private final CreatorService creatorService;
     private final BlogSpecification blogSpecification;
+    private final CommentService commentService;
+    private final ImageService imageService;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BlogResponse create(NewBlogRequest request) {
         String id = UUID.randomUUID().toString();
@@ -90,7 +94,7 @@ public class BlogServiceImpl implements BlogService {
         return pages.map(this::getBlogResponse);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BlogResponse update(UpdateBlogRequest request) {
         int update = blogRepository.update(new Date(), request.getTitle(), request.getBody(), request.getId());
@@ -99,9 +103,12 @@ public class BlogServiceImpl implements BlogService {
         return getById(request.getId());
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(String id) {
+        Blog blog = blogRepository.getOneById(id);
+        blog.getImages().forEach(image -> imageService.delete(image.getId()));
+        blog.getComments().forEach(comment -> commentService.delete(comment.getId()));
         blogRepository.delete(id);
     }
 
