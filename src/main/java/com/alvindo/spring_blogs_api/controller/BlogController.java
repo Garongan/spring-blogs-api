@@ -82,7 +82,7 @@ public class BlogController {
 
         CommonResponse<List<BlogResponse>> commonResponse = CommonResponse.<List<BlogResponse>>builder()
                 .httpStatus(HttpStatus.OK.value())
-                .httpMessage(StatusMessage.SUCCESS_RETRIEVE)
+                .httpMessage(StatusMessage.SUCCESS_RETRIEVE_LIST)
                 .data(responsePage.getContent())
                 .paginationResponse(paginationResponse)
                 .build();
@@ -105,10 +105,10 @@ public class BlogController {
     public ResponseEntity<CommonResponse<String>> delete(@PathVariable String id){
         blogService.delete(id);
         CommonResponse<String> response = CommonResponse.<String>builder()
-                .httpStatus(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.NO_CONTENT.value())
                 .httpMessage(StatusMessage.SUCCESS_DELETE)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 }

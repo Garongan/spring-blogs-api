@@ -44,6 +44,7 @@ public class BlogServiceImpl implements BlogService {
         CreatorResponse creatorResponse = creatorService.getById(request.getCreatorId());
 
         if (creatorResponse == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, StatusMessage.NOT_FOUND);
+
         Creator creator = Creator.builder()
                 .id(creatorResponse.getId())
                 .name(creatorResponse.getName())
