@@ -3,6 +3,7 @@ package com.alvindo.spring_blogs_api.service.impl;
 import com.alvindo.spring_blogs_api.constant.StatusMessage;
 import com.alvindo.spring_blogs_api.dto.request.FilterBlogRequest;
 import com.alvindo.spring_blogs_api.dto.request.NewBlogRequest;
+import com.alvindo.spring_blogs_api.dto.request.UpdateBlogRequest;
 import com.alvindo.spring_blogs_api.dto.response.BlogResponse;
 import com.alvindo.spring_blogs_api.dto.response.CreatorResponse;
 import com.alvindo.spring_blogs_api.entity.Blog;
@@ -69,6 +70,7 @@ public class BlogServiceImpl implements BlogService {
         return getBlogResponse(blog);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BlogResponse getById(String id) {
         Blog blog = blogRepository.getOneById(id);
@@ -76,6 +78,7 @@ public class BlogServiceImpl implements BlogService {
         return getBlogResponse(blog);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<BlogResponse> getAll(FilterBlogRequest request) {
         Specification<Blog> specification = blogSpecification.getBlogSpecification(request);
@@ -84,6 +87,21 @@ public class BlogServiceImpl implements BlogService {
         Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
         Page<Blog> pages = blogRepository.findAll(specification, pageable);
         return pages.map(this::getBlogResponse);
+    }
+
+    @Transactional
+    @Override
+    public BlogResponse update(UpdateBlogRequest request) {
+        int update = blogRepository.update(new Date(), request.getTitle(), request.getBody(), request.getId());
+        if (update == 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, StatusMessage.BAD_REQUEST);
+
+        return getById(request.getId());
+    }
+
+    @Transactional
+    @Override
+    public void delete(String id) {
+        blogRepository.delete(id);
     }
 
     private BlogResponse getBlogResponse(@NonNull Blog blog){

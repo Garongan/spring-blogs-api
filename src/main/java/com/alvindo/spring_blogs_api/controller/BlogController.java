@@ -4,6 +4,7 @@ import com.alvindo.spring_blogs_api.constant.ApiUrl;
 import com.alvindo.spring_blogs_api.constant.StatusMessage;
 import com.alvindo.spring_blogs_api.dto.request.FilterBlogRequest;
 import com.alvindo.spring_blogs_api.dto.request.NewBlogRequest;
+import com.alvindo.spring_blogs_api.dto.request.UpdateBlogRequest;
 import com.alvindo.spring_blogs_api.dto.response.BlogResponse;
 import com.alvindo.spring_blogs_api.dto.response.CommonResponse;
 import com.alvindo.spring_blogs_api.dto.response.PaginationResponse;
@@ -86,5 +87,28 @@ public class BlogController {
                 .paginationResponse(paginationResponse)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(commonResponse);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<CommonResponse<BlogResponse>> update(@RequestBody UpdateBlogRequest request){
+        BlogResponse updated = blogService.update(request);
+        CommonResponse<BlogResponse> response = CommonResponse.<BlogResponse>builder()
+                .httpStatus(HttpStatus.OK.value())
+                .httpMessage(StatusMessage.SUCCESS_UPDATE)
+                .data(updated)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<CommonResponse<String>> delete(@PathVariable String id){
+        blogService.delete(id);
+        CommonResponse<String> response = CommonResponse.<String>builder()
+                .httpStatus(HttpStatus.OK.value())
+                .httpMessage(StatusMessage.SUCCESS_DELETE)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

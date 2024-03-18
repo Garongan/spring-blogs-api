@@ -47,7 +47,7 @@ public class CreatorServiceImpl implements CreatorService {
         return getCreatorResponse(creator);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public CreatorResponse getById(String id) {
         Creator creator = creatorRepository.getOneById(id);
@@ -55,6 +55,7 @@ public class CreatorServiceImpl implements CreatorService {
         return null;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<CreatorResponse> getAll(FilterCreatorRequest request) {
         Specification<Creator> specification = creatorSpecification.getCreatorSpecification(request);

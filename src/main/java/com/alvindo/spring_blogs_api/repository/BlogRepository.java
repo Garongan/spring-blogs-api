@@ -26,9 +26,10 @@ public interface BlogRepository extends JpaRepository<Blog, String>, JpaSpecific
 
     @Modifying
     @Query(value = "UPDATE blog SET created_at = :updatedAt, title = :title, body = :body WHERE id = :id", nativeQuery = true)
-    Blog update(@Param("updatedAt") Date updatedAt,
+    int update(@Param("updatedAt") Date updatedAt,
                 @Param("title") String title,
-                @Param("body") String body);
+                @Param("body") String body,
+                @Param("id") String id);
 
     @Modifying
     @Query(value = "DELETE FROM blog WHERE id = :id", nativeQuery = true)
