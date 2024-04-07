@@ -8,7 +8,6 @@ import com.alvindo.spring_blogs_api.repository.ImageRepository;
 import com.alvindo.spring_blogs_api.service.ImageService;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.ConstraintViolationException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
@@ -86,6 +84,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Resource getById(String id) {
         try {
@@ -99,6 +98,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void delete(String id) {
         try {
@@ -111,5 +111,21 @@ public class ImageServiceImpl implements ImageService {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, StatusMessage.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ImageResponse> getAllByBlogId(String blogId) {
+        List<Image> images = imageRepository.getAllByBlogId(blogId);
+        return images.stream().map(this::getImageResponse).toList();
+    }
+
+    private ImageResponse getImageResponse (Image image) {
+        return ImageResponse.builder()
+                .id(image.getId())
+                .name(image.getName())
+                .path(image.getPath())
+                .contentType(image.getContentType())
+                .build();
     }
 }

@@ -48,9 +48,9 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(commonResponse);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommonResponse<List<CommentResponse>>> getAll(){
-        List<CommentResponse> commentResponses = commentService.getAll();
+    @GetMapping(path = "/{blog-id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse<List<CommentResponse>>> getAll(@PathVariable(name = "blog-id") String blogId){
+        List<CommentResponse> commentResponses = commentService.getAllByBlogId(blogId);
 
         CommonResponse<List<CommentResponse>> commonResponse = CommonResponse.<List<CommentResponse>>builder()
                 .httpStatus(HttpStatus.OK.value())

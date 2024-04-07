@@ -8,7 +8,6 @@ import com.alvindo.spring_blogs_api.dto.response.ImageResponse;
 import com.alvindo.spring_blogs_api.service.ImageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(ApiUrl.IMAGE_URL)
@@ -52,5 +53,18 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(commonResponse);
         }
+    }
+
+    @GetMapping(path = "/{blog-id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommonResponse<List<ImageResponse>>> getAllByBlogId (@PathVariable(name = "blog-id") String blogId) {
+        List<ImageResponse> imageResponses = imageService.getAllByBlogId(blogId);
+
+        CommonResponse<List<ImageResponse>> commonResponse = CommonResponse.<List<ImageResponse>>builder()
+                .httpStatus(HttpStatus.OK.value())
+                .httpMessage(StatusMessage.SUCCESS_RETRIEVE_LIST)
+                .data(imageResponses)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(commonResponse);
     }
 }

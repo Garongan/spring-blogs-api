@@ -13,4 +13,6 @@ public interface ImageService {
     Resource getById(String id);
 
     void delete(String id);
+
+    List<ImageResponse> getAllByBlogId(String blogId);
 }

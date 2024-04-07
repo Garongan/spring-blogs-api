@@ -11,7 +11,7 @@ public interface CommentService {
 
     CommentResponse getById(String id);
 
-    List<CommentResponse> getAll();
+    List<CommentResponse> getAllByBlogId(String blogId);
 
     CommentResponse update(UpdateCommentRequest request);
 

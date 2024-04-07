@@ -50,9 +50,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CommentResponse> getAll() {
-        List<Comment> comments = commentRepository.findAll();
-        return comments.stream().map(this::getCommentResponse).toList();
+    public List<CommentResponse> getAllByBlogId(String blogId) {
+        return commentRepository.getAllByBlogId(blogId);
     }
 
     @Transactional(rollbackFor = Exception.class)
